@@ -1,1 +1,379 @@
-aaa
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unify - Atendimento</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f4f7fb;
+      color: #333;
+    }
+
+    /* NAVBAR */
+    .navbar-atendimento {
+      background: white;
+      padding: 15px 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-brand-atendimento {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0d6efd;
+      text-decoration: none;
+    }
+
+    .navbar-menu-atendimento {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      margin-left: auto;
+      align-items: center;
+    }
+
+    .navbar-menu-atendimento a {
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      transition: 0.2s;
+      font-size: 14px;
+    }
+
+    .navbar-menu-atendimento a:hover {
+      color: #0d6efd;
+    }
+
+    .btn-voltar {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .btn-voltar:hover {
+      background: #5a6268;
+      color: white;
+    }
+
+    /* CONTAINER */
+    .atendimento-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* HEADER */
+    .atendimento-header {
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    .atendimento-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: #0d6efd;
+      margin-bottom: 12px;
+    }
+
+    .atendimento-subtitle {
+      font-size: 16px;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* CARDS PRINCIPAIS */
+    .atendimento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .atendimento-card {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .atendimento-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+      border-color: #0d6efd;
+    }
+
+    .atendimento-card a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .card-icon {
+      font-size: 56px;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0d6efd;
+      margin-bottom: 12px;
+    }
+
+    .card-desc {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .card-badge {
+      display: inline-block;
+      background: #e7f1ff;
+      color: #0d6efd;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Chat modal message time and typing */
+    .msg-time { display: block; margin-top: 6px; font-size: 11px; color: rgba(0,0,0,0.45); }
+    .typing-indicator { display:inline-block; width:30px; height:10px; }
+    .typing-indicator span { display:inline-block; width:6px; height:6px; background:#bbb; border-radius:50%; margin-right:4px; opacity:0.5; animation: blink 1s infinite; }
+    .typing-indicator span:nth-child(2){ animation-delay: .15s; }
+    .typing-indicator span:nth-child(3){ animation-delay: .3s; }
+    @keyframes blink { 0%{opacity:0.2} 50%{opacity:1} 100%{opacity:0.2} }
+
+    /* Chat modal structure */
+    .chat-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:center; justify-content:center; }
+    .chat-box { width:480px; background:#fff; border-radius:12px; box-shadow:0 20px 50px rgba(0,0,0,0.3); overflow:hidden; display:flex; flex-direction:column; }
+    .chat-header { background:#0d6efd; color:white; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .chat-header .title { font-weight:800; font-size:16px; }
+    .chat-waiting { display:none; background:#fff3cd; color:#856404; padding:10px 16px; text-align:center; font-weight:600; }
+    .chat-decision { display:none; padding:10px 16px; background:#eef6ff; text-align:center; }
+    .chat-body { height:420px; overflow:auto; padding:16px; background:#f8f9fa; display:flex; flex-direction:column; gap:10px; }
+    .chat-input { padding:12px; background:white; display:flex; gap:8px; align-items:center; }
+    .msg-bubble { padding:10px 12px; border-radius:12px; font-size:14px; line-height:1.4; max-width:78%; display:inline-block; }
+    .msg { display:flex; align-items:flex-end; gap:10px; opacity:0; transform:translateY(8px); transition: all 0.18s ease; }
+    .msg.show { opacity:1; transform:translateY(0); }
+    .msg.user { align-self:flex-end; justify-content:flex-end; }
+    .msg.attendant { align-self:flex-start; justify-content:flex-start; }
+    .msg.bot { align-self:flex-start; justify-content:flex-start; }
+    .msg .avatar { width:36px; height:36px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:700; color:#fff; font-size:13px; }
+    .avatar.user { background:#0d6efd; }
+    .avatar.attendant { background:#28a745; }
+    .avatar.bot { background:#6c757d; }
+    .msg .meta { font-size:11px; color:#666; margin-top:6px; }
+    .msg.user .msg-bubble { background:#0d6efd; color:#fff; border-bottom-right-radius:4px; }
+    .msg.attendant .msg-bubble { background:#d4edda; color:#155724; }
+    .msg.bot .msg-bubble { background:#e9ecef; color:#333; }
+
+    /* Close 'X' button */
+    .btn-close-chat { background: transparent; color: white; border: none; font-size: 18px; cursor: pointer; padding: 6px 8px; border-radius: 6px; }
+    .btn-close-chat:hover { background: rgba(255,255,255,0.08); }
+
+    /* STATS */
+    .stats-atendimento {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 50px auto 0;
+      padding-top: 40px;
+      border-top: 2px solid #e6e6e6;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: 800;
+      color: #0d6efd;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: #666;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #111;
+      color: #ccc;
+      text-align: center;
+      padding: 25px;
+      margin-top: 60px;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #0d6efd;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar-atendimento">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <a href="dashboard.html" class="navbar-brand-atendimento">Unify</a>
+      
+      <ul class="navbar-menu-atendimento">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="#conversas">Conversas</a></li>
+        <li><a href="#relatorios">Relatórios</a></li>
+        <li><a href="dashboard.html" class="btn-voltar">← Voltar</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="atendimento-container">
+
+    <!-- HEADER -->
+    <div class="atendimento-header">
+      <h1 class="atendimento-title">Central de Atendimento</h1>
+      <p class="atendimento-subtitle">Gerencie seus atendimentos, visualize históricos e acompanhe métricas</p>
+    </div>
+
+    <!-- CARDS PRINCIPAIS -->
+    <div class="atendimento-grid">
+
+      <!-- INICIAR CONVERSA -->
+      <a id="openChatBtn" href="#" style="text-decoration:none;">
+        <div class="atendimento-card">
+          <div class="card-icon">💬</div>
+          <div class="card-title">Iniciar Conversa</div>
+          <div class="card-desc">Comece um novo atendimento com clientes. Receba e responda mensagens em tempo real.</div>
+          <div class="card-badge">Ativo</div>
+        </div>
+      </a>
+
+      <!-- HISTÓRICO DE CONVERSAS -->
+      <a href="history.html" style="text-decoration:none;">
+        <div class="atendimento-card">
+          <div class="card-icon">📁</div>
+          <div class="card-title">Histórico de Conversas</div>
+          <div class="card-desc">Visualize todas as conversas anteriores, busque por cliente e acompanhe o histórico completo.</div>
+          <div class="card-badge">Arquivo</div>
+        </div>
+      </a>
+
+      <!-- RELATÓRIOS -->
+      <a href="#" style="text-decoration:none;">
+        <div class="atendimento-card">
+          <div class="card-icon">📊</div>
+          <div class="card-title">Relatórios</div>
+          <div class="card-desc">Analise métricas de desempenho, tempo de resposta, satisfação e produtividade da equipe.</div>
+          <div class="card-badge">Analytics</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- ESTATÍSTICAS -->
+    <div class="stats-atendimento">
+      <div class="stat-item">
+        <div class="stat-number">24</div>
+        <div class="stat-label">Conversas Hoje</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">8</div>
+        <div class="stat-label">Atendentes</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">4.2</div>
+        <div class="stat-label">Avaliação</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">3min</div>
+        <div class="stat-label">Tempo Médio</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Unify — Atendimento Unificado para Empresas | <a href="#">Suporte</a> · <a href="#">Documentação</a></p>
+  </footer>
+
+  <!-- CHAT MODAL -->
+  <div id="chatModal" class="chat-modal">
+    <div class="chat-box">
+      <div class="chat-header">
+        <div class="title">Atendimento Rápido <span id="chatStatusBadge" style="margin-left:10px; padding: 4px 8px; border-radius: 8px; font-weight:600; font-size:12px; background: rgba(255,255,255,0.15);">Aberto</span></div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button id="closeChatX" class="btn-close-chat" aria-label="Fechar chat">×</button>
+          <div style="display:flex; gap:8px; align-items:center; margin-right:8px;">
+            <label for="attendantModeToggle" style="font-size:12px; color:white; opacity:0.9; margin-right:6px;">Modo Atendente</label>
+            <input id="attendantModeToggle" type="checkbox" checked aria-label="Modo Atendente">
+          </div>
+          <button id="openHistoryFromChat" class="btn btn-sm btn-light" title="Histórico">Histórico</button>
+          <button id="transferBtn" class="btn btn-sm btn-warning">Transferir</button>
+          <button id="simulateClientBtn" class="btn btn-sm btn-outline-light">Simular Cliente</button>
+          <button id="closeChatBtn" class="btn btn-sm btn-secondary">Fechar</button>
+        </div>
+      </div>
+      <!-- optionally show waiting banner -->
+      <div id="chatWaitingBanner" class="chat-waiting">Aguardando atendimento humano. Você pode continuar conversando com o assistente automático.</div>
+      <!-- decision UI: continue previous conversation or start new -->
+      <div id="chatDecision" class="chat-decision">
+        <div style="font-weight:700; color:#0d6efd; margin-bottom:8px;">Deseja continuar sua última conversa ou iniciar uma nova?</div>
+        <div style="display:flex; gap:8px; justify-content:center;">
+          <button id="chatContinueBtn" class="btn btn-sm btn-outline-primary">Continuar</button>
+          <button id="chatNewBtn" class="btn btn-sm btn-primary">Nova Conversa</button>
+        </div>
+      </div>
+      <div id="chatBody" class="chat-body">
+        <!-- messages go here -->
+      </div>
+      <div class="chat-input">
+        <input id="chatInput" type="text" placeholder="Escreva sua mensagem..." style="flex:1; padding:10px 12px; border-radius:8px; border:1px solid #ddd;">
+        <button id="sendChatBtn" class="btn btn-primary">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/unify.js" defer></script>
+
+</body>
+</html>

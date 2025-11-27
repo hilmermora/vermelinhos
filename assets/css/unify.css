@@ -1,0 +1,18 @@
+body{
+    margin: 10px;
+}
+
+/* Use a class instead of the global `form` selector so not every form gets styled */
+.custom-form{
+    background-color: rgb(99, 138, 232);
+    margin: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+h1{
+    text-transform: uppercase;
+    margin: 30px;
+    text-align: center;
+}

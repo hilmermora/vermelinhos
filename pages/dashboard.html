@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unify - Menu Principal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f4f6ff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .unify-header {
+      background: #1e3a8a;
+      color: white;
+      padding: 18px 30px;
+      font-size: 22px;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .unify-container {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 10px;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+    }
+
+    .menu-card {
+      background: #ffffff;
+      padding: 28px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      transition: 0.25s;
+      cursor: pointer;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .menu-icon {
+      font-size: 42px;
+      margin-bottom: 15px;
+      color: #1e3a8a;
+    }
+
+    .menu-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 8px;
+    }
+
+    .menu-desc {
+      color: #555;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOPO -->
+  <div class="unify-header">
+    Bem-vindo ao Unify
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="unify-container">
+
+    <h3 class="mb-4 fw-bold text-center">O que você deseja fazer?</h3>
+
+    <div class="menu-grid">
+
+      <!-- INICIAR ATENDIMENTO -->
+      <a href="dashboard.html" style="text-decoration:none;">
+        <div class="menu-card">
+          <div class="menu-icon">💬</div>
+          <div class="menu-title">Iniciar Atendimento</div>
+          <div class="menu-desc">Acessar a tela de conversas e responder clientes.</div>
+        </div>
+      </a>
+
+      <!-- VER CONVERSAS -->
+      <a href="dashboard.html" style="text-decoration:none;">
+        <div class="menu-card">
+          <div class="menu-icon">📁</div>
+          <div class="menu-title">Ver Conversas</div>
+          <div class="menu-desc">Visualizar todas as mensagens em andamento.</div>
+        </div>
+      </a>
+
+      <!-- CANAIS -->
+      <a href="#" style="text-decoration:none;">
+        <div class="menu-card">
+          <div class="menu-icon">📡</div>
+          <div class="menu-title">Gerenciar Canais</div>
+          <div class="menu-desc">Conectar WhatsApp, Instagram, Facebook, Telegram etc.</div>
+        </div>
+      </a>
+
+      <!-- EQUIPE -->
+      <a href="#" style="text-decoration:none;">
+        <div class="menu-card">
+          <div class="menu-icon">👥</div>
+          <div class="menu-title">Equipe</div>
+          <div class="menu-desc">Gerenciar atendentes, permissões e status.</div>
+        </div>
+      </a>
+
+      <!-- CONFIGURAÇÕES -->
+      <a href="#" style="text-decoration:none;">
+        <div class="menu-card">
+          <div class="menu-icon">⚙️</div>
+          <div class="menu-title">Configurações</div>
+          <div class="menu-desc">Ajustar preferências, integrações e dados da empresa.</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+</body>
+</html>
